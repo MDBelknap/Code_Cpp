@@ -23,7 +23,7 @@ class Sailboat{
     }
     std::string calc_tack(int wind_dir, int heading){
         int diff;
-        std::string sailDir = "";
+        
         if (heading >= wind_dir)
     {
         diff = heading - wind_dir;
@@ -36,31 +36,44 @@ class Sailboat{
     }
         if (diff < 40 || diff > 320)
     {
-        sailDir = "irons";
+        tack = "irons";
     }
         else if ((diff >= 40 && diff < 45) || (diff > 315 && diff <= 320))
     {
-        sailDir = "luffing";
+        tack = "luffing";
     }
         else if ((diff >= 45 && diff < 60) || (diff > 300 && diff <= 315))
     {
-        sailDir = "close hauled";
+        tack = "close hauled";
     }
         else if ((diff >= 60 && diff < 120) || (diff > 240 && diff <= 300))
     {
-        sailDir = "beam reach";
+        tack = "beam reach";
     }
         else if ((diff >= 120 && diff < 165) || (diff > 195 && diff <= 240))
     {
-        sailDir = "broad reach";
+        tack = "broad reach";
     }
         else
     {
-        sailDir = "run";
+        tack = "run";
     }
-    return sailDir;
+    return tack;
 }
-
+double calc_heal(std::string tack, double windSpeed){
+    if (tack == "close haul"){
+        return windSpeed * 1.75;
+    }
+    else if (tack == "beam reach"){
+        return windSpeed * 1.2;
+    }
+    else if (tack == "broad run"){
+        return windSpeed * .8;
+    }
+    else{
+        return windSpeed * .2;
+    }
+}
 
 };
 class Weather{
@@ -92,6 +105,7 @@ int main(){
 
 Sailboat sailboat;
 int wind_Dir = 140;
+int windSpeed = 12;
 int new_heading;
 std::cout << "Enter a heading for the boat: ";
 std::cin >> new_heading;
@@ -102,4 +116,6 @@ while (!sailboat.valid_heading(new_heading)){
 
 std::cout << "the couse you have set is: "<< sailboat.heading << "\n";
 std::cout << "On a " << sailboat.calc_tack(wind_Dir, sailboat.heading) << " tack.\n";
+std::cout << "The boat is healing " << sailboat.calc_heal(sailboat.tack, windSpeed) << "degrees.\n";
 }
+
