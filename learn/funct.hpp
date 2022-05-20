@@ -1,0 +1,1 @@
+int MultByTwo(int num);
